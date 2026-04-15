@@ -530,6 +530,60 @@ const executeBatchPlayCommand = async (commands) => {
     return out;
 }
 
+async function playAction(command) {
+    const options = command.options;
+    const actionName = options.actionName;
+    const actionSet = options.actionSet;
+
+    const out = await require("photoshop").core.executeAsModal(async () => {
+        const batchPlay = require("photoshop").action.batchPlay;
+        const result = await batchPlay([
+            {
+                _obj: "play",
+                _target: [
+                    {
+                        _ref: "action",
+                        _name: actionName
+                    },
+                    {
+                        _ref: "actionSet",
+                        _name: actionSet
+                    }
+                ],
+                _options: { dialogOptions: "dontDisplay" }
+            }
+        ], {});
+        return result[0];
+    });
+
+    return out;
+}
+
+async function createDocumentFromPreset(command) {
+    const options = command.options;
+    const width = options.width || 4500;
+    const height = options.height || 5400;
+    const resolution = options.resolution || 300;
+    const transparent = options.transparent !== false;
+    const docName = options.documentName || undefined;
+
+    await execute(async () => {
+        await app.createDocument({
+            typename: "DocumentCreateOptions",
+            width: width,
+            height: height,
+            resolution: resolution,
+            mode: constants.NewDocumentMode.RGB,
+            fill: transparent ? constants.DocumentFill.TRANSPARENT : constants.DocumentFill.WHITE,
+            profile: "sRGB IEC61966-2.1",
+        });
+
+        if (docName && app.activeDocument) {
+            app.activeDocument.title = docName;
+        }
+    });
+}
+
 const commandHandlers = {
     generativeFill,
     executeBatchPlayCommand,
@@ -547,6 +601,8 @@ const commandHandlers = {
     saveDocument,
     saveDocumentAs,
     createDocument,
+    playAction,
+    createDocumentFromPreset,
 };
 
 module.exports = {

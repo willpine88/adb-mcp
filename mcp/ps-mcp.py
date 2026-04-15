@@ -1611,6 +1611,46 @@ alignment_modes = [
     "BOTTOM"
 ]
 
+@mcp.tool()
+async def play_action(action_name: str, action_set: str) -> dict:
+    """Plays a Photoshop Action by name from a specified Action Set.
+    
+    Args:
+        action_name (str): The name of the action to play (e.g. "removebackground")
+        action_set (str): The name of the action set containing the action (e.g. "Default Actions")
+    """
+    command = createCommand("playAction", {
+        "actionName": action_name,
+        "actionSet": action_set,
+    })
+    return sendCommand(command)
+
+@mcp.tool()
+async def create_document_from_preset(
+    width: int = 4500,
+    height: int = 5400,
+    resolution: int = 300,
+    transparent: bool = True,
+    document_name: str = ""
+) -> dict:
+    """Creates a new Photoshop document with custom settings.
+    
+    Args:
+        width (int): Width in pixels (default 4500)
+        height (int): Height in pixels (default 5400)
+        resolution (int): Resolution in DPI (default 300)
+        transparent (bool): True for transparent background, False for white (default True)
+        document_name (str): Optional name for the document
+    """
+    command = createCommand("createDocumentFromPreset", {
+        "width": width,
+        "height": height,
+        "resolution": resolution,
+        "transparent": transparent,
+        "documentName": document_name,
+    })
+    return sendCommand(command)
+    
 blend_modes = [
     "COLOR",
     "COLORBURN",
