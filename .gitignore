@@ -2,6 +2,8 @@
 *.ccx
 
 dist/
+build/
+*.spec
 
 .DS_Store
 .AppleDouble

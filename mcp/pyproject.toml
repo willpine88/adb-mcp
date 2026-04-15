@@ -19,6 +19,12 @@ dependencies = [
     "websocket-client>=1.8.0",
     "pillow>=11.2.1",
     "numpy>=2.2.6",
+	"gevent",
+	"gevent-websocket",
+	"simple-websocket",
+	"werkzeug",
+	"eventlet",
+	"uvicorn",
 ]
 
 [project.optional-dependencies]
